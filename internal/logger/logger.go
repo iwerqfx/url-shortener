@@ -35,7 +35,7 @@ func New(cfg Config) (*slog.Logger, error) {
 		handler = slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{Level: level})
 	default:
 		handler = tint.NewHandler(os.Stdout, &tint.Options{
-			Level:      slog.LevelDebug,
+			Level:      level,
 			TimeFormat: time.DateTime,
 		})
 	}

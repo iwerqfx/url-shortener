@@ -26,7 +26,7 @@ func NewURLService(service *Service, repository sqlite.URLRepository) URLService
 func (s *urlService) Create(url string) (string, error) {
 	alias, err := util.GenerateAlias()
 	if err != nil {
-		return "", model.ErrInternalServer
+		return "", err
 	}
 
 	if err = s.repository.Create(url, alias); err != nil {
@@ -43,7 +43,7 @@ func (s *urlService) GetByAlias(alias string) (model.URL, error) {
 	}
 
 	if err = s.repository.IncreaseViews(alias); err != nil {
-		return model.URL{}, model.ErrInternalServer
+		return model.URL{}, err
 	}
 
 	return url, nil

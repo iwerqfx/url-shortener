@@ -5,13 +5,15 @@ import (
 	_ "github.com/joho/godotenv/autoload"
 	"github.com/sethvargo/go-envconfig"
 	"sync"
+	"time"
 )
 
 type (
 	Config struct {
-		App AppConfig
-		Log LogConfig
-		DB  DBConfig
+		App      AppConfig
+		Log      LogConfig
+		Database DatabaseConfig
+		Server   ServerConfig
 	}
 
 	AppConfig struct {
@@ -23,8 +25,16 @@ type (
 		Format string `env:"LOG_FORMAT, required"`
 	}
 
-	DBConfig struct {
-		URL string `env:"DB_URL, required"`
+	DatabaseConfig struct {
+		URL string `env:"DATABASE_URL, required"`
+	}
+
+	ServerConfig struct {
+		Address         string        `env:"SERVER_ADDRESS, required"`
+		ReadTimeout     time.Duration `env:"SERVER_READ_TIMEOUT, required"`
+		WriteTimeout    time.Duration `env:"SERVER_WRITE_TIMEOUT, required"`
+		IdleTimeout     time.Duration `env:"SERVER_IDLE_TIMEOUT, required"`
+		ShutdownTimeout time.Duration `env:"SERVER_SHUTDOWN_TIMEOUT, required"`
 	}
 )
 

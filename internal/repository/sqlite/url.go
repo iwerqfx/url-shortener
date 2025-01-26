@@ -1,6 +1,8 @@
 package sqlite
 
 import (
+	dbSQL "database/sql"
+	"errors"
 	"fmt"
 	"github.com/Masterminds/squirrel"
 	"github.com/iwerqfx/url-shortener/internal/model"
@@ -65,7 +67,11 @@ func (r *urlRepository) GetByAlias(alias string) (model.URL, error) {
 	}
 
 	var url model.URL
-	if err := r.db.QueryRow(sql, args...).Scan(&url.ID, &url.URL, &url.Alias, &url.Views); err != nil {
+	if err = r.db.QueryRow(sql, args...).Scan(&url.ID, &url.URL, &url.Alias, &url.Views); err != nil {
+		if errors.Is(err, dbSQL.ErrNoRows) {
+			return model.URL{}, model.ErrURLNotFound
+		}
+
 		return model.URL{}, err
 	}
 
