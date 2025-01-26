@@ -32,7 +32,7 @@ func main() {
 		}
 	}(db)
 
-	r := sqlite.New(log, db)
+	r := sqlite.NewRepository(log, db)
 	urlRepository := sqlite.NewURLRepository(r)
 
 	s := service.NewService(log)

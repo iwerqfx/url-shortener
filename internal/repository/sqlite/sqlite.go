@@ -14,9 +14,13 @@ type Repository struct {
 	sb  squirrel.StatementBuilderType
 }
 
-func New(log *slog.Logger, db *sql.DB) *Repository {
+func NewRepository(log *slog.Logger, db *sql.DB) *Repository {
 	sb := squirrel.StatementBuilder.PlaceholderFormat(squirrel.Question)
-	return &Repository{log: log, db: db, sb: sb}
+	return &Repository{
+		log: log,
+		db:  db,
+		sb:  sb,
+	}
 }
 
 func NewDB(url string) (*sql.DB, error) {
