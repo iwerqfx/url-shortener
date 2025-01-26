@@ -11,7 +11,7 @@ const urlsTableName = "urls"
 type URLRepository interface {
 	Create(url, alias string) error
 	GetByAlias(alias string) (model.URL, error)
-	IncreaseClicks(alias string) error
+	IncreaseViews(alias string) error
 }
 type urlRepository struct {
 	*Repository
@@ -23,7 +23,7 @@ func NewURLRepository(repository *Repository) URLRepository {
 		    id INTEGER PRIMARY KEY,
 		    url TEXT NOT NULL,
 		    alias TEXT NOT NULL UNIQUE,
-		    clicks INTEGER DEFAULT 0
+		    views INTEGER DEFAULT 0
 		);
 		CREATE INDEX IF NOT EXISTS idx_alias ON urls(alias);
 	`, urlsTableName))
@@ -65,16 +65,16 @@ func (r *urlRepository) GetByAlias(alias string) (model.URL, error) {
 	}
 
 	var url model.URL
-	if err := r.db.QueryRow(sql, args...).Scan(&url.ID, &url.URL, &url.Alias, &url.Clicks); err != nil {
+	if err := r.db.QueryRow(sql, args...).Scan(&url.ID, &url.URL, &url.Alias, &url.Views); err != nil {
 		return model.URL{}, err
 	}
 
 	return url, nil
 }
 
-func (r *urlRepository) IncreaseClicks(alias string) error {
+func (r *urlRepository) IncreaseViews(alias string) error {
 	sql, args, err := r.sb.Update(urlsTableName).
-		Set("clicks", squirrel.Expr("clicks + ?", 1)).
+		Set("views", squirrel.Expr("views + ?", 1)).
 		Where(squirrel.Eq{"alias": alias}).
 		ToSql()
 	if err != nil {

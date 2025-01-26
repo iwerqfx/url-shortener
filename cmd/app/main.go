@@ -6,6 +6,7 @@ import (
 	"github.com/iwerqfx/url-shortener/internal/config"
 	"github.com/iwerqfx/url-shortener/internal/logger"
 	"github.com/iwerqfx/url-shortener/internal/repository/sqlite"
+	"github.com/iwerqfx/url-shortener/internal/service"
 )
 
 func main() {
@@ -31,7 +32,10 @@ func main() {
 		}
 	}(db)
 
-	repository := sqlite.New(log, db)
-	urlRepository := sqlite.NewURLRepository(repository)
+	r := sqlite.New(log, db)
+	urlRepository := sqlite.NewURLRepository(r)
+
+	s := service.NewService(log)
+	urlService := service.NewURLService(s, urlRepository)
 
 }
