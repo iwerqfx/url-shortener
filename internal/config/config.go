@@ -11,6 +11,7 @@ type (
 	Config struct {
 		App AppConfig
 		Log LogConfig
+		DB  DBConfig
 	}
 
 	AppConfig struct {
@@ -20,6 +21,10 @@ type (
 	LogConfig struct {
 		Level  string `env:"LOG_LEVEL, required"`
 		Format string `env:"LOG_FORMAT, required"`
+	}
+
+	DBConfig struct {
+		URL string `env:"DB_URL, required"`
 	}
 )
 
