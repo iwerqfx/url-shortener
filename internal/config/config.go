@@ -9,7 +9,12 @@ import (
 
 type (
 	Config struct {
+		App AppConfig
 		Log LogConfig
+	}
+
+	AppConfig struct {
+		Name string `env:"APP_NAME, required"`
 	}
 
 	LogConfig struct {
