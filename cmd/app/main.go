@@ -1,6 +1,7 @@
 package main
 
 import (
+	"database/sql"
 	"fmt"
 	"github.com/iwerqfx/url-shortener/internal/config"
 	"github.com/iwerqfx/url-shortener/internal/logger"
@@ -23,6 +24,12 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+
+	defer func(db *sql.DB) {
+		if err = db.Close(); err != nil {
+			panic("error closing db: " + err.Error())
+		}
+	}(db)
 
 	repository := sqlite.New(log, db)
 	urlRepository := sqlite.NewURLRepository(repository)
